@@ -27,5 +27,33 @@ get '/donate' do
 end
 
 post '/donate' do
-	
+	email = email.downcase
+	docs = options.db.view('people/sponsors_by_email', :key => h(email))
+	if docs['rows'].length > 0
+		haml :alreadyRegistered
+	else
+		options.db.save_doc({ 
+			'companyName' => params[:name],
+			'email' => email,
+			'contactName' => params[:contact],
+			'dateCreated' => Time.now.to_s
+		})
+		
+		Pony.mail(:to => email,
+					:from => "info@dddsydney.com",
+					:subject => "DDD Sydney Sponsorship Information",
+					:html_body => "<p>Thanks for your interest in sponsoring DDD Sydney. Please find a sponsorship package attached for your reference. </p> <p>If you have any questions, simply reply to this email. </p> <p> Thanks, <br /> The DDD Sydney Team </p>",
+					:attachments => {"DDD Sydney Sponsor Pack.docx" => File.read("doco/DDD Sydney Sponsor Pack.docx")},
+					:port => '587',
+					:via => :smtp,
+					:via_options => { 
+						:address              => 'smtp.sendgrid.net', 
+						:port                 => '587', 
+						:enable_starttls_auto => true, 
+						:user_name            => ENV['SENDGRID_USERNAME'], 
+						:password             => ENV['SENDGRID_PASSWORD'], 
+						:authentication       => :plain, 
+						:domain               => ENV['SENDGRID_DOMAIN']
+					})
+	end
 end
