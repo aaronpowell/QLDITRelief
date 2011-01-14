@@ -57,3 +57,8 @@ post '/donate' do
 					})
 	end
 end
+
+# NOTE: For development purposes only.
+get '/sandbox' do
+  haml :sandbox
+end
