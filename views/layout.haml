@@ -1,0 +1,20 @@
+!!!
+%html
+  %head
+    %title Queensland IT Flood Relief Program
+    %link{:href => '/css/main.css', :rel => 'stylesheet', :type => 'text/css'}
+    %script{:type => 'text/javascript', :src => 'http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.4.4.js' }
+    %script{:type => 'text/javascript', :src => 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.js' }
+    %script{:type=> 'text/javascript'} 
+      try{Typekit.load();}catch(e){}
+    /[if lte IE 8]
+      :javascript 
+        document.createElement('footer');document.createElement('header');
+  %body
+    #content
+      %header
+      %h1#title Queensland IT Flood Relief Program
+      %div#view
+        =yield
+      %footer
+        Copyright &copy 2010 - #{Time.now.year} QLD IT Flood Releif Program
